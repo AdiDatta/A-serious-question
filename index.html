@@ -91,7 +91,8 @@ button {
 
 <div class="container">
     <button id="yes" onclick="yesClicked()">Yes 💖</button>
-    <button id="no">No 😈</button>
+        <button id="noBtn">No 😈</button>
+
 </div>
 <script>
 const heartEmojis = ["💖","💕","💗","💓","💘","💞","💝"];
@@ -137,12 +138,13 @@ const taunts = [
     "You can't say no 💖"
 ];
 
-noBtn.addEventListener("mouseenter", () => {
+function moveNoButton() {
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
 
-    const maxX = window.innerWidth - btnWidth;
-    const maxY = window.innerHeight - btnHeight;
+    const padding = 20;
+    const maxX = window.innerWidth - btnWidth - padding;
+    const maxY = window.innerHeight - btnHeight - padding;
 
     const randomX = Math.random() * maxX;
     const randomY = Math.random() * maxY;
@@ -150,8 +152,22 @@ noBtn.addEventListener("mouseenter", () => {
     noBtn.style.position = "fixed";
     noBtn.style.left = randomX + "px";
     noBtn.style.top = randomY + "px";
+
     noBtn.innerText = taunts[Math.floor(Math.random() * taunts.length)];
+}
+
+// Desktop (mouse)
+noBtn.addEventListener("mouseover", moveNoButton);
+
+// Mobile (touch)
+noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveNoButton();
 });
+
+// Fallback (click)
+noBtn.addEventListener("click", moveNoButton);
+
 
 /* ===== YES PAGE (ONLY THIS PART CHANGED) ===== */
 
@@ -209,6 +225,7 @@ function yesClicked() {
 
 </body>
 </html>
+
 
 
 
