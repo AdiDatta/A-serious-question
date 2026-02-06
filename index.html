@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine?</title>
+
+<style>
+/* ===== HOMEPAGE STYLES ===== */
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    text-align: center;
+}
+
+h1 {
+    color: white;
+    margin-bottom: 30px;
+}
+
+/* BUTTON CONTAINER */
+.container {
+    position: relative;
+    width: 300px;
+    height: 150px;
+}
+
+/* BUTTONS */
+button {
+    position: absolute;
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: left 0.2s ease, top 0.2s ease, transform 0.2s;
+}
+
+#yes {
+    background-color: #28a745;
+    color: white;
+    left: 20px;
+    top: 50px;
+}
+
+#yes:hover {
+    transform: scale(1.1);
+}
+
+#no {
+    background-color: #dc3545;
+    color: white;
+    left: 160px;
+    top: 50px;
+}
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    font-size: 24px;
+    animation: floatUp 6s linear forwards;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+        opacity: 0.7;
+    }
+    to {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="hearts"></div>
+
+<h1 id="typing"></h1>
+
+<div class="container">
+    <button id="yes" onclick="yesClicked()">Yes 💖</button>
+    <button id="no">No 😈</button>
+</div>
+<script>
+const heartEmojis = ["💖","💕","💗","💓","💘","💞","💝"];
+
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.fontSize = (20 + Math.random() * 15) + "px";
+
+    document.getElementById("hearts").appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}
+
+setInterval(createHeart, 400);
+</script>
+
+<script>
+/* ===== TYPING EFFECT ===== */
+const text = "💖 Will you be my Valentine? 💖";
+let i = 0;
+const typing = document.getElementById("typing");
+
+function typeText() {
+    if (i < text.length) {
+        typing.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeText, 80);
+    }
+}
+typeText();
+
+/* ===== NO BUTTON ESCAPES ANYWHERE ===== */
+const noBtn = document.getElementById("no");
+const taunts = [
+    "😏 Nice try",
+    "Nope!",
+    "Too slow!",
+    "Almost 😜",
+    "You can't say no 💖"
+];
+
+noBtn.addEventListener("mouseenter", () => {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+    noBtn.innerText = taunts[Math.floor(Math.random() * taunts.length)];
+});
+
+/* ===== YES PAGE (ONLY THIS PART CHANGED) ===== */
+
+function yesClicked() {
+    document.body.innerHTML = `
+        <div id="hearts"></div>
+
+        <div style="
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-family:'Segoe UI', sans-serif;
+        ">
+            <div style="
+                background:white;
+                padding:40px 30px;
+                border-radius:18px;
+                width:360px;
+                text-align:center;
+                box-shadow:0 20px 40px rgba(0,0,0,0.15);
+                animation: pop 0.5s ease;
+            ">
+                <div style="font-size:48px;">🐱💖</div>
+
+                <h2 style="margin:15px 0;">YAY!!! 🎉</h2>
+
+                <p style="font-size:16px;">
+                    You just made my Valentine special 🥰
+                </p>
+
+                <img 
+                    src="https://i.ibb.co/fhsdWFQ/96cd7e329caf7040d9f6ddfea710ebcd.gif"
+                    style="width:220px;border-radius:12px;margin:15px auto;display:block;"
+                >
+
+                <p style="font-size:14px;color:#777;margin-top:10px;">
+                    I was really hoping you'd say yes 💕
+                </p>
+            </div>
+        </div>
+
+        <style>
+            @keyframes pop {
+                from { transform: scale(0.8); opacity:0; }
+                to { transform: scale(1); opacity:1; }
+            }
+        </style>
+    `;
+
+    // 💖 RESTART HEARTS ON YES PAGE
+    setInterval(createHeart, 400);
+}
+</script>
+
+</body>
+</html>
